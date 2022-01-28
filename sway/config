@@ -1,0 +1,267 @@
+#КЛАВИША МОДИФИКАТОР
+	set $mod Mod4
+
+#АВТОЗАПУСК
+	exec mako 
+	exec avizo-service
+	exec dbus-update-activation-environment DISPLAY I3SOCK SWAYSOCK WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+	exec easyeffects  --gapplication-service
+	exec wl-paste -t text --watch clipman store --no-persist
+ 	exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+#БУФЕР ОБМЕНА
+	bindsym --to-code $mod+c exec clipman pick -t wofi
+
+#ХОТКЕИ ДЛЯ ПРИЛОЖЕНИЙ
+	bindsym $mod+F1 exec firefox
+	bindsym $mod+F2 exec telegram-desktop
+	bindsym $mod+F3 exec steam-runtime
+	bindsym $mod+F4 exec crow
+	bindsym --to-code ctrl+alt+l exec swaylock -i ~/Pictures/archlinux_wallpapers/wallpaperflare.com_wallpaper.jpg
+	bindsym --to-code ctrl+alt+r exec systemctl reboot -i
+	bindsym --to-code ctrl+alt+s exec systemctl suspend -i
+	bindsym --to-code ctrl+alt+p exec systemctl poweroff -i 
+ # color-picker
+	bindsym --to-code $mod+Shift+p exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy 
+
+#УПРАВЛЕНИЕ ГРОМКОСТЬЮ
+	bindsym ctrl+Right exec volumectl -u up 
+	bindsym ctrl+Left  exec volumectl -u down
+	bindsym --to-code ctrl+m  exec volumectl  toggle-mute
+	bindsym  ctrl+minus exec volumectl -m toggle-mute
+
+#УПРАВЛЕНИЕ ВОСПРОИЗВЕДЕНИЕМ
+	bindsym ctrl+alt+Down  exec playerctl play-pause
+	bindsym ctrl+alt+Right exec playerctl next
+	bindsym ctrl+alt+Left  exec playerctl previous
+
+#ЗАПУСК НА ОПРЕДЕЛЕННОМ ВОРКСПЙСЕ
+#	assign [app_id="epiphany"] workspace 1
+#	assign [app_id="inkscape"] workspace 1
+
+#ЗАПУСК В ФОКУСЕ
+#	for_window [app_id="epiphany"] focus
+#	for_window [app_id="inkscape"] focus
+
+#ЗАПУСК В ПЛАВАЮЩЕМ РЕЖИМЕ
+	for_window [app_id="gnome-calculator"] floating enable
+
+#НАВИГАЦИЯ
+	set $left h
+	set $down j
+	set $up k
+	set $right l
+
+#ЭМУЛЯТОР ТЕРМИНАЛА
+	set $term kitty
+
+#ЛАУНЧЕР ПРИЛОЖЕНИЙ
+	set $menu dmenu_path | wofi --show drun -I | xargs swaymsg exec --
+
+#ТЕМЫ, ИКОНКИ, КУРСОРЫ GTK
+	set $gnome-schema org.gnome.desktop.interface
+	exec_always {
+        	gsettings set $gnome-schema gtk-theme 'Qogir-dark'
+        	gsettings set $gnome-schema icon-theme 'Papirus-Dark'
+        	gsettings set $gnome-schema cursor-theme 'Adwaita'
+        	gsettings set $gnome-schema font-name 'Cantarell Regular 11'
+	}
+
+#КУРСОР SWAY
+	seat seat0 xcursor_theme "Adwaita"
+	exec_always gsettings set org.gnome.desktop.interface cursor-theme "Adwaita"
+
+#ГАПСЫ
+	gaps inner 8
+	gaps outer 2
+#	smart_gaps on
+
+#ОТКЛЮЧЕНИЕ ЗАГОЛОВКОВ ОКОН
+	default_border pixel  
+
+#РАЗМЕР РАМОК
+	for_window [tiling] border pixel 1 
+
+#ОТКЛЮЧЕНИЕ РАМКИ КОГДА ОТКРЫТО ОДНО ОКНО
+	smart_borders off
+
+#ЦВЕТА РАМОК
+	#                       Рамка   Фон   Индикатор Родительская_рамка
+	client.focused			#bbccdd #bbccdd #bbccdd #bbccdd
+	client.focused_inactive		#535d6c #535d6c #535d6c #535d6c
+	client.unfocused		#535d6c #535d6c #535d6c #535d6c
+	client.urgent			#d1d9ec #d1d9ec #d1d9ec #d1d9ec
+	client.placeholder		#d1d9ec #d1d9ec #d1d9ec #d1d9ec
+
+	#client.focused — окно в фокусе
+	#client.unfocused — окно вне фокуса
+	#client.focused_inactive — окно в фокусе но не активно
+	#client.urgent — окно требует внимания (всплывающее)
+
+#ШРИФТЫ
+	font pango:Roboto 10
+
+#ОБОИ
+	output * bg ~/Pictures/wallpapers/52148* fill
+
+#НАСТРОЙКА ЭКРАНА
+	#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+	#   посмотреть доступные устройства и разрешения: swaymsg -t get_outputs
+
+
+#СКРИНШОТЫ
+	bindsym Print exec grim ~/Pictures/screenshotes/screen-"$(date +%s)".png
+	bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/screenshotes/screen-"$(date +%s)".png
+
+
+#ВЫВОД ОПРЕДЕЛЕННОГО ВОРКСПЕЙСА НА ОПРЕДЕЛЕННЫЙ МОНИТОР
+	# workspace 1 output HDMI-A-1
+	# workspace 2 output HDMI-A-2
+
+#БЛОКИРОВКА ЭКРАНА:
+	# exec swayidle -w \
+	#          timeout 300 'swaylock -f -c 000000' \
+	#          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+	#          before-sleep 'swaylock -f -c 000000'
+
+#РАСКЛАДКА КЛАВИАТУРЫ
+	input * {
+	    xkb_layout us,ru
+	    xkb_options grp:win_space_toggle
+	}
+	#СПИСОК УСТРОЙСТВ ВВОДА: swaymsg -t get_inputs
+	#СПРАВКА ПО НАСТРОЙКЕ УСТРОЙСТВ ВВОДА: man 5 sway-input
+
+#NUMLOCK
+#	input * xkb_numlock enabled
+
+#ГОРЯЧИИ КЛАВИШИ
+    #ЗАПУСК ТЕРМИНАЛА
+    bindsym $mod+Return exec $term
+
+    #ЗАКРЫТЬ ОКНО
+    bindsym --to-code $mod+Shift+q kill
+
+    #ЗАПУСК ЛАУНЧЕРА
+    bindsym --to-code $mod+d exec $menu
+
+    #НАСТРОЙКА КЛАВИШИ ПЕРЕТАСКИВАНИЯ ОКОН В ПЛАВАЮЩЕМ РЕЖИМЕ
+    floating_modifier $mod normal
+
+    #ПЕРЕЗАГРУЗКА КОНФИГА
+    bindsym --to-code $mod+Shift+c reload
+
+    #ВЫХОД ИЗ SWAY
+    bindsym --to-code $mod+Shift+e exec swaynag -t warning -m 'Вы действительно хотите выйти из sway?' -b 'Да, выйти из sway' 'swaymsg exit'
+
+#ПЕРЕМЕЩЕНИЕ ОКОН
+    #СМЕНА ФОКУСА
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
+    #СМЕНА ФОКУСА
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    #ПЕРЕМЕЩЕНИЕ ФОКУСНОГО ОКНА
+    bindsym $mod+Shift+$left move left
+    bindsym $mod+Shift+$down move down
+    bindsym $mod+Shift+$up move up
+    bindsym $mod+Shift+$right move right
+    #ПЕРЕМЕЩЕНИЕ ФОКУСНОГО ОКНА
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+
+    #ПЕРЕКЛЮЧЕНИЕ ВОРКСПЕЙСА
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+    bindsym $mod+6 workspace number 6
+    bindsym $mod+7 workspace number 7
+    bindsym $mod+8 workspace number 8
+    bindsym $mod+9 workspace number 9
+    bindsym $mod+0 workspace number 10
+    bindsym $mod+alt+Right workspace next
+    bindsym $mod+alt+Left  workspace prev
+
+    #ПЕРЕМЕЩЕНИЕ ОКНА НА ВОРКСПЕЙС
+    bindsym $mod+Shift+1 move container to workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5
+    bindsym $mod+Shift+6 move container to workspace number 6
+    bindsym $mod+Shift+7 move container to workspace number 7
+    bindsym $mod+Shift+8 move container to workspace number 8
+    bindsym $mod+Shift+9 move container to workspace number 9
+    bindsym $mod+Shift+0 move container to workspace number 10
+    bindsym $mod+alt+shift+Right move container to workspace next
+    bindsym $mod+alt+shift+Left  move container to workspace prev
+
+    #НАСТРОЙКА ПОЗИЦИИ НОВОГО ОКНА (ГОРИЗОНТАЛЬНО ИЛИ ВЕРТИКАЛЬНО)
+    bindsym --to-code $mod+b splith
+    bindsym --to-code $mod+v splitv
+
+    #СМЕНА СТИЛЯ КОНТЕЙНЕРА
+    bindsym --to-code $mod+s layout stacking
+    bindsym --to-code $mod+w layout tabbed
+    bindsym --to-code $mod+e layout toggle split
+
+    #ФУЛЛСКРИН
+    bindsym --to-code $mod+f fullscreen
+
+    #ПЛАВАЮЩИЙ РЕЖИМ
+    bindsym $mod+Shift+space floating toggle
+
+    #ПЕРЕКЛЮЧЕНИЕ МЕЖДУ ПЛАВАЮЩИМ РЕЖИМОМ И ТАЙЛИНГОМ
+    bindsym $mod+space focus mode_toggle
+
+    #ПЕРЕКЛЮЧИТЬ ФОКУС НА РОДИТЕЛЬСКИЙ КОНТЕЙНЕР
+    bindsym --to-code $mod+a focus parent
+
+    #СВЕРНУТЬ ОКНО
+    bindsym $mod+Shift+minus move scratchpad
+
+    #РАЗВЕРНУТЬ ОКНО
+    bindsym $mod+minus scratchpad show
+
+    #РЕСАЙЗ
+    mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 50px
+    bindsym $down resize grow height 50px
+    bindsym $up resize shrink height 50px
+    bindsym $right resize grow width 50px
+
+    #НА СКОЛЬКО РЕСАЙЗИТЬ
+    bindsym Left resize shrink width 50px
+    bindsym Down resize grow height 50px
+    bindsym Up resize shrink height 50px
+    bindsym Right resize grow width 50px
+
+    #ОТМЕНИТЬ РЕСАЙЗ
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+    #РЕСАЙЗ ОКНА
+    bindsym --to-code $mod+r mode "resize"
+
+#WAYBAR
+	bar {
+		swaybar_command waybar
+	}
+
+
+include /etc/sway/config.d/*
+
+
