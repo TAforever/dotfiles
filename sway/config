@@ -80,7 +80,8 @@
 	default_border pixel  
 
 #РАЗМЕР РАМОК
-	for_window [tiling] border pixel 1 
+	for_window [tiling] border pixel 1
+	for_window [floating] border pixel 0
 
 #ОТКЛЮЧЕНИЕ РАМКИ КОГДА ОТКРЫТО ОДНО ОКНО
 	smart_borders off
