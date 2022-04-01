@@ -1,0 +1,215 @@
+# КЛАВИША МОДИФИКАТОР
+set $mod Mod4
+# РАСКЛАДКА КЛАВИАТУРЫ
+exec --no-startup-id setxkbmap -model pc105 -layout us,ru -option grp:win_space_toggle
+
+#АВТОЗАПУСК
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec --no-startup-id nitrogen --restore
+#exec --no-startup-id numlockx
+exec --no-startup-id picom -b
+exec --no-startup-id sleep 5s && exec --no-startup-id easyeffects --gapplication-service
+exec --no-startup-id dunst
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# ГОРЯЧИЕ КЛАВИШИ
+bindsym $mod+F1 exec firefox
+bindsym $mod+F2 exec telegram-desktop
+bindsym $mod+f3 exec steam
+bindsym $mod+F4 exec crow
+
+# ПРИВЯЗКА К ВОРКСПЕЙСАМ
+assign [class="firefox"] $ws1
+assign [class="telegramdesktop"] $ws2
+assign [class="Steam"] $ws3
+assign [class="crow"] $ws4
+
+
+# ПРИЛОЖЕНИЯ В ФОКУСЕ
+assign [class="firefox"] $ws1
+assign [class="Blender"] $ws2
+assign [class="Inkscape"] $ws3
+assign [class="Mplayer"] $ws3
+
+# ПЛАВАЮЩИЕ ПРИЛОЖЕНИЯ
+for_window [class="kcalc"] floating enabled
+
+# КНОПКИ УПРАВЛЕНИЯ ГРОМКОСТЬЮ ДЛЯ ПУЛЬСАУДИО
+bindsym ctrl+Right exec --no-startup-id ~/.local/bin/volchange.sh volup
+bindsym ctrl+Left exec --no-startup-id ~/.local/bin/volchange.sh voldown
+bindsym ctrl+m exec --no-startup-id ~/.local/bin/volchange.sh volmute
+bindsym ctrl+shift+m exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+# МОДИФИКАТОР ДЛЯ УПРАВЛЕНИЯ ОКНОМ МЫШЬЮ
+floating_modifier $mod
+
+# ЗАПУСК ТЕРМИНАЛА
+bindsym $mod+Return exec kitty
+
+# ЗАКРЫТЬ ОКНО
+bindsym $mod+q kill
+
+# ЗАПУСК DMENU ИЛИ ROFI
+bindsym $mod+d exec --no-startup-id rofi -show run
+# A more modern dmenu replacement is rofi:
+# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
+# There also is i3-dmenu-desktop which only displays applications shipping a
+# .desktop file. It is a wrapper around dmenu, so you need that installed.
+# bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
+
+# СМЕНА ФОКУСА НА ДРУГОЕ ОКНО
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+# АЛЬТЕРНАТИВНАЯ СМЕНА ФОКУСА НА ДРУГОЕ ОКНО
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# ПЕРЕМЕЩЕНИЕ ФОКУСНОГО ОКНА
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+# АЛЬТЕРНАТИВНОЕ ПЕРЕМЕЩЕНИЕ ФОКУСНОГО ОКНА
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# ГОРИЗОНТАЛЬНАЯ ОРИЕНТАЦИЯ НОВОГО ОКНА
+bindsym $mod+h split h
+
+# ВЕРТИКАЛЬНАЯ ОРИЕНТАЦИЯ НОВОГО ОКНА
+bindsym $mod+v split v
+
+# ФУЛЛСКРИН
+bindsym $mod+f fullscreen toggle
+
+# КОРОЧ ВЕЩЬ КОТОРАЯ МЕНЯЕТ ТИП КОНТЕЙНЕРА,
+# ЭТО КОГДА НЕСКОЛЬКО ОКОН КАК В БРАУЗЕРЕ СКЛАДЫВАЮТСЯ,
+# А ЗАГОЛОВКИ КАК ВКЛАДКИ
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# СДЕЛАТЬ ОКНО ПЛАВАЮЩИМ
+bindsym $mod+Shift+space floating toggle
+
+# ПЕРЕКЛЮЧЕНИЕ ФОКУСА С ПЛАВАЮЩИХ ОКОН НА ТАЙЛИНГ
+bindsym $mod+space focus mode_toggle
+
+# ЯХЗ ЧТО ЭТО ТАКОЕ
+bindsym $mod+a focus parent
+
+# ЭТО НЕ НУЖНО РАСКОМЕНТИРОВАТЬ, КОМБИНАЦИЯ КЛАВИШ КОПИРУЕТ
+# КОМБИНАЦИЮ КЛАВИШЬ ЗАПУСКА DMENU
+#bindsym $mod+d focus child
+
+# ГАПСЫ
+gaps inner 5
+gaps outer 4
+
+#smart_gaps on
+
+# ШРИФТЫ
+font pango:monospace 8
+
+# ОТКЛЮЧЕНИЕ ЗАГОЛОВКА ОКНА
+#default_border pixel
+
+# РАЗМЕР РАМОК ОКНА
+for_window [tiling] border pixel 2
+for_window [floating] border pixel 0
+
+# ОТКЛЮЧЕНИЕ РАМОК ДЛЯ ПОЛНОЭКРАННЫХ ПРИЛОЖЕНИЙ
+#smart_borders on
+
+# ЦВЕТ РАМОК
+#                       Рамка   Фон   Индикатор Родительская_рамка
+client.focused			#d1d9ec #d1d9ec #011b28 #011b28
+client.focused_inactive  	#011b28 #011b28 #011b28 #011b28
+client.unfocused		#011b28 #011b28 #011b28 #011b28
+client.urgent			#d1d9ec #d1d9ec #011b28 #011b28
+client.placeholder		#d1d9ec #d1d9ec #011b28 #011b28
+
+#	client.focused — окно в фокусе
+#	client.unfocused — окно вне фокуса
+#	client.focused_inactive — окно в фокусе но не активно
+#	client.urgent — окно требует внимания (всплывающее) 
+
+# ИМЕНА ВОРКСПЕЙСОВ И ИХ НОМЕРА
+set $ws1 "1_"
+set $ws2 "2_"
+set $ws3 "3_"
+set $ws4 "4_"
+set $ws5 "5_#"
+set $ws6 "6_#"
+set $ws7 "7_#"
+set $ws8 "8_#"
+set $ws9 "9_"
+set $ws10 "10_#"
+
+# ПЕРЕКЛЮЧЕНИЕ ВОРКСПЕЙСОВ
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+# ПЕРЕМЕЩЕНИЕ ОКНА НА ДРУГОЙ ВОРКСЕПАЙС
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# ПЕРЕЗАГРУЗИТЬ КОНФИГ
+bindsym $mod+Shift+c reload
+
+# ПЕРЕЗАГРУСКА I3 ПОСЛЕ ПРАВОК КОНФИГА С СОХРАНЕНИЕМ СЕАНСА
+bindsym $mod+Shift+r restart
+
+# ВЫХОД ИЗ I3
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# ИЗМЕНЕНИЕ РАЗМЕРА ОКНА {
+        # СЛЕДУЮЩИЕ КОМБИНАЦИИ РАБОТАЮТ СРАЗУ ПОСЛЕ ВХОДА В РЕЖИМ ИЗМЕНЕНИЯ РАЗМЕРА
+mode "resize" {
+        # ВЛЕВО УМЕНЬШИТЬ РАЗМЕР ОКНА
+        # ВПРАВО УВЕЛИЧИТЬ РАЗМЕР ОКНА
+        # ВВЕРХ УМЕНЬШЕНИЕ ВЫСОТЫ ОКНА
+        # ВНИЗ УВЕЛЕЧЕНИЕ РАЗМЕРОВ ОКНА
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # ТОЖЕ САМОЕ НО СО СТРЕЛКАМИ
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # ВОЗВРАТ В НОРМАЛЬНОЕ СОСТОЯНИЕ, ESC ОТМЕНА, ENTER ПОДТВЕРЖДЕНИЕ
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
