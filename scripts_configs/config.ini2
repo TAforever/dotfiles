@@ -1,0 +1,290 @@
+[colors]
+background = #282A2E
+background-alt = #373B41
+foreground = #C5C8C6
+primary = #F0C674
+secondary = #8ABEB7
+alert = #A54242
+disabled = #707880
+
+[bar/example]
+width = 100%:-20
+height = 20pt
+radius = 0
+fixed-center = true
+offset-x = 10
+offset-y = 10
+; dpi = 96
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 0pt
+
+border-size = 1pt
+border-color = #C2AF8D
+
+padding-left = 0
+padding-right = 1
+
+module-margin = 1
+
+separator = |
+separator-foreground = ${colors.disabled}
+
+font-0 = Roboto Mono Medium:size=11;2
+font-1 = Font Awesome 6 Brands Regular:pixelsize=10;2
+font-2 = Font Awesome 6 Free Regular:pixelsize=10;2
+font-3 = Font Awesome 6 Free Solid:pixelsize=10;2
+
+modules-left = xworkspaces 
+modules-center = xwindow
+modules-right = temperature gputemp pulseaudio xkeyboard timer calendar 
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+enable-ipc = true
+
+;  tray-position = right
+
+; wm-restack = generic
+wm-restack = bspwm
+; wm-restack = i3
+
+; override-redirect = true
+
+[module/xworkspaces]
+type = internal/xworkspaces
+
+label-active = %name%
+label-active-background = ${colors.background-alt}
+label-active-underline= ${colors.primary}
+label-active-padding = 1
+
+label-occupied = %name%
+label-occupied-padding = 1
+
+label-urgent = %name%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 1
+
+label-empty = %name%
+label-empty-foreground = ${colors.disabled}
+label-empty-padding = 1
+
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:100:..%
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+
+label-mounted = %{F#F0C674}%mountpoint%%{F-} %used%
+
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.disabled}
+
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+; Sink to be used, if it exists (find using `pacmd list-sinks`, name field)
+; If not, uses default sink
+
+; Use PA_VOLUME_UI_MAX (~153%) if true, or PA_VOLUME_NORM (100%) if false
+; Default: true
+use-ui-max = true
+
+; Interval for volume increase/decrease (in percent points)
+; Default: 5
+interval = 5
+
+; Available tags:
+;   <label-volume> (default)
+;   <ramp-volume>
+;   <bar-volume>
+format-volume = <ramp-volume> <label-volume>
+
+; Available tags:
+;   <label-muted> (default)
+;   <ramp-volume>
+;   <bar-volume>
+;format-muted = <label-muted>
+
+; Available tokens:
+;   %percentage% (default)
+;   %decibels%
+;label-volume = %percentage%%
+
+; Available tokens:
+;   %percentage% (default)
+;   %decibels%
+label-muted =  
+label-muted-foreground = #666
+
+; Only applies if <ramp-volume> is used
+ramp-volume-0 = 
+ramp-volume-1 = 🔈
+ramp-volume-2 = 🔊
+
+ramp-volume-foreground = ${colors.primary}
+; Right and Middle click
+click-right = pavucontrol
+; click-middle = 
+
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+label-layout = %layout%
+label-layout-foreground = ${colors.primary}
+
+label-indicator-padding = 1
+label-indicator-margin = 2
+label-indicator-foreground = ${colors.background}
+label-indicator-background = ${colors.secondary}
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = "RAM "
+format-prefix-foreground = ${colors.primary}
+label = %gb_used:2%
+
+[module/temperature]
+type = internal/temperature
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 1
+
+; Thermal zone to use
+; To list all the zone types, run 
+; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+; Default: 0
+thermal-zone = 0
+
+; Full path of temperature sysfs path
+; Use `sensors` to find preferred temperature source, then run
+; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+; to find path to desired file
+; Default reverts to thermal zone setting
+hwmon-path = /sys/class/hwmon/hwmon1/temp1_input
+
+; Base temperature for where to start the ramp (in degrees celsius)
+; Default: 0
+base-temperature = 20
+
+; Threshold temperature to display warning label (in degrees celsius)
+; Default: 80
+warn-temperature = 70
+
+; Whether or not to show units next to the temperature tokens (°C, °F)
+; Default: true
+units = true
+
+; Available tags:
+;   <label> (default)
+;   <ramp>
+format = <label>
+; Available tags:
+;   <label-warn> (default)
+;   <ramp>
+format-warn = <label-warn>
+
+format-prefix = " "
+format-prefix-foreground = ${colors.primary}
+
+; Available tokens:
+;   %temperature% (deprecated)
+;   %temperature-c%   (default, temperature in °C)
+;   %temperature-f%   (temperature in °F)
+label = %temperature-c% 
+; Available tokens:
+;   %temperature% (deprecated)
+;   %temperature-c%   (default, temperature in °C)
+;   %temperature-f%   (temperature in °F)
+label-warn = "  %temperature-c%"
+label-warn-foreground = #f00
+
+; Requires the <ramp> tag
+; The icon selection will range from `base-temperature` to `warn-temperature`,
+; temperatures at and above `warn-temperature` will use the last icon
+; and temperatures at and below `base-temperature` will use `ramp-0`. 
+; All other icons are distributed evenly between the two temperatures.
+ramp-0 = A
+ramp-1 = B
+ramp-2 = C
+ramp-foreground = #55
+
+[module/gputemp]
+type = custom/script
+interval = 1
+format-prefix = " "
+format-prefix-foreground = ${colors.primary}
+exec = echo $(cat /sys/class/hwmon/hwmon0/temp1_input | cut -b 1,2)°C 
+
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = "CPU "
+format-prefix-foreground = ${colors.primary}
+label = %percentage:2%%
+
+[network-base]
+type = internal/network
+interval = 5
+format-connected = <label-connected>
+format-disconnected = <label-disconnected>
+label-disconnected = %{F#F0C674}%ifname%%{F#707880} disconnected
+
+[module/wlan]
+inherit = network-base
+interface-type = wireless
+label-connected = %{F#F0C674}%ifname%%{F-} %essid% %local_ip%
+
+[module/eth]
+inherit = network-base
+interface-type = wired
+label-connected = %{F#F0C674}%ifname%%{F-} %local_ip%
+
+[module/calendar]
+type = custom/script
+interval = 1
+exec = date +%H:%M
+click-left = ~/.polybar-scripts/calendar.sh curr
+scroll-up = ~/.polybar-scripts/calendar.sh next
+scroll-down = ~/.polybar-scripts/calendar.sh prev
+label-foreground = ${colors.primary}
+
+[module/timer]
+type = custom/script
+exec = ~/.polybar-scripts/polybar-timer.sh tail '' 5
+tail = true
+click-left = ~/.polybar-scripts/polybar-timer.sh new 25 '' '' 'notify-send -u normal -t 0 "Session finished" && paplay /usr/share/sounds/freedesktop/stereo/complete.oga' ; ~/.polybar-scripts/polybar-timer.sh update %pid%
+click-right = ~/.polybar-scripts/polybar-timer.sh cancel ; ~/.polybar-scripts/polybar-timer.sh update %pid%
+click-middle = ~/.polybar-scripts/polybar-timer.sh togglepause ; ~/.polybar-scripts/polybar-timer.sh update %pid%
+scroll-up = ~/.polybar-scripts/polybar-timer.sh increase 60 || ~/.polybar-scripts/polybar-timer.sh new 1 '' '' 'notify-send -u normal -t 0 "Timer expired." && paplay /usr/share/sounds/freedesktop/stereo/complete.oga' ; ~/.polybar-scripts/polybar-timer.sh update %pid%
+scroll-down = ~/.polybar-scripts/polybar-timer.sh increase -60 ; ~/.polybar-scripts/polybar-timer.sh update %pid%
+label-foreground = ${colors.primary}
+
+[module/date]
+type = internal/date
+interval = 1
+date = %H:%M
+date-alt = %Y-%m-%d %H:%M:%S
+
+label = %date%
+label-foreground = ${colors.primary}
+
+[settings]
+screenchange-reload = true
+pseudo-transparency = true
+
+; vim:ft=dosini
