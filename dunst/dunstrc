@@ -34,7 +34,7 @@
     origin = top-right
 
     # Offset from the origin
-    offset = 16x42
+    offset = 12x34
     #offset = 18x18
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -62,7 +62,7 @@
     progress_bar_max_width = 300
 
     # Set bar color
-    highlight = "#74a096"
+    highlight = "#00656D"
 
     # Show how many messages are currently hidden (because of
     # notification_limit).
@@ -89,10 +89,10 @@
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
-    frame_width = 2
+    frame_width = 3
 
     # Defines color of the frame around the notification window.
-    frame_color = "#efc574"
+    frame_color = "#AF3A03"
 
     # Define a color for the separator.
     # possible values are:
@@ -114,7 +114,7 @@
 
     ### Text ###
 
-    font = Roboto Mono Medium 10
+    font = JetBrains Mono Medium 10
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -232,7 +232,7 @@
     # corners.
     # The radius will be automatically lowered if it exceeds half of the
     # notification height to avoid clipping text and/or icons.
-    corner_radius = 8
+    corner_radius = 6
 
     # Ignore the dbus closeNotification message.
     # Useful to enforce the timeout set by dunst configuration. Without this
@@ -281,6 +281,32 @@
     mouse_middle_click = do_action, close_current
     mouse_right_click = close_all
 
+
+[shortcuts]
+
+    # Shortcuts are specified as [modifier+][modifier+]...key
+    # Available modifiers are "ctrl", "mod1" (the alt-key), "mod2",
+    # "mod3" and "mod4" (windows-key).
+    # Xev might be helpful to find names for keys.
+
+    # Close notification.
+    close = ctrl+space
+
+    # Close all notifications.
+    close_all = ctrl+shift+space
+
+    # Redisplay last message(s).
+    # On the US keyboard layout "grave" is normally above TAB and left
+    # of "1". Make sure this key actually exists on your keyboard layout,
+    # e.g. check output of 'xmodmap -pke'
+    history = ctrl+h
+
+    # Context menu.
+    context = ctrl+shift+period
+
+
+
+
 # Experimental features that may or may not work correctly. Do not expect them
 # to have a consistent behaviour across releases.
 [experimental]
@@ -304,7 +330,7 @@
 [urgency_normal]
     background = "#242424"
     foreground = "#ebdbb2"
-    timeout = 5
+    timeout = 0
     # Icon for notifications with normal urgency, uncomment to enable
     #default_icon = /path/to/icon
 
