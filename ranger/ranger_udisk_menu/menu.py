@@ -35,9 +35,10 @@ class ChoosePartition:
 
     def _read_partitions(self):
         r = subprocess.check_output(['lsblk', '--all', '--json', '-O'])
-        self.blkinfo = json.loads(r)
+        r = r.decode().replace('0B,', '\"0B\",')
+        self.blkinfo = json.loads(r.encode())
         partn = 0
-         # filter for devices with children, none other are used by this script
+        # filter for devices with children, none other are used by this script
         # (this is not entirely correct, but goes beyond these lines)
         self.blkinfo['blockdevices'] = [
             bd
